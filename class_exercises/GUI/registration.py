@@ -73,6 +73,7 @@ class GenderFrame(tk.Frame):
 
         for idx, gender in enumerate(self.genders):
             r = tk.Radiobutton(self, text=gender, variable=self.selected_gender, value=gender)
+            r.focus()
             r.grid(row=0, column=idx + 1, stick=tk.EW)
 
 
@@ -85,5 +86,5 @@ if __name__ == '__main__':
     main_frame = MainFrame(root)
     main_frame.pack(fill=tk.BOTH, expand=True)
     gender_frame = GenderFrame(root)
-    gender_frame.pack(fill=tk.BOTH, expand=True)
+    gender_frame.place(x=300, y=150)
     root.mainloop()
