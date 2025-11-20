@@ -8,6 +8,14 @@ COUNTRIES = [
     "Other",
 ]
 
+LANGUAGES = [
+    "Python",
+    "Java",
+    "Ruby",
+    "C++"
+]
+
+
 class MainFrame(tk.Frame):
     def __init__(self, master):
         super().__init__(master)
@@ -57,14 +65,12 @@ class MainFrame(tk.Frame):
 class GenderFrame(tk.Frame):
     def __init__(self, master):
         super().__init__(master)
-        self.gender = tk.Label(self, text="Gender")
         self.selected_gender = tk.StringVar()
         self.genders = ("Male", "Female")
 
         self.place_widget()
 
     def place_widget(self):
-        settings = {"sticky": tk.EW, "padx": 15, "pady": 5}
         self.rowconfigure(0, weight=1)
         self.columnconfigure(0, weight=1)
         self.columnconfigure(1, weight=2)
@@ -73,10 +79,24 @@ class GenderFrame(tk.Frame):
 
         for idx, gender in enumerate(self.genders):
             r = tk.Radiobutton(self, text=gender, variable=self.selected_gender, value=gender)
-            r.focus()
+            r.focus_set()
             r.grid(row=0, column=idx + 1, stick=tk.EW)
 
 
+class ProgrammingFrame(tk.Frame):
+    def __init__(self, master):
+        super().__init__(master)
+        self.place_widget()
+
+    def place_widget(self):
+        self.rowconfigure(0, weight=1)
+        for i in range(0, len(LANGUAGES)):
+            self.columnconfigure(i, weight=1)
+
+        for idx, language in enumerate(LANGUAGES):
+            l = ttk.Checkbutton(self, text=language)
+            l.grid(row=0, column=idx, sticky=tk.EW)
+            l.focus_set()
 
 
 if __name__ == '__main__':
@@ -86,5 +106,7 @@ if __name__ == '__main__':
     main_frame = MainFrame(root)
     main_frame.pack(fill=tk.BOTH, expand=True)
     gender_frame = GenderFrame(root)
-    gender_frame.place(x=300, y=150)
+    gender_frame.place(x=235, y=150)
+    programming_frame = ProgrammingFrame(root)
+    programming_frame.place(x=235, y=230)
     root.mainloop()
