@@ -1,3 +1,4 @@
+
 class Temperature:
     def __init__(self, celsius: float):
         self._celsius = celsius
