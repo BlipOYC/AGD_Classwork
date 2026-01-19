@@ -45,10 +45,33 @@ comments = [('Count me in', 1, 6),
 
 parameterized_insert_comments_query = """
 INSERT INTO
-    comments()
+    comments(text, user_id, post_id)
 VALUES
     (?, ?, ?);
 """
 
+#conn.executemany(parameterized_insert_comments_query, comments)
+
+
+select_question = """
+SELECT text
+FROM comments
+WHERE text LIKE '%?'
+"""
+
+change_lizzy = """
+UPDATE users
+SET name = 'Lizzy'
+WHERE name = 'Elizabeth'
+"""
+
+
+SELECT users.name, count(posts.id)
+FROM users inner join posts on users.id = posts.user_id
+GROUP BY posts.id;
+
+
+
 conn.commit()
 conn.close()
+

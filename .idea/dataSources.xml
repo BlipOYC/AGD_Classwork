@@ -15,5 +15,12 @@
       <jdbc-url>jdbc:sqlite:C:\Users\oweche0809\OneDrive - Highgate School\Year 12 Comp Sci\PyCharm Projects\AGD Classwork new\class_exercises\sqliting\social_media\social_media</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="activities" uuid="ef2cfa5c-27f7-49bc-9549-c2f933219998">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:C:\Users\oweche0809\OneDrive - Highgate School\Year 12 Comp Sci\PyCharm Projects\AGD Classwork new\class_exercises\sqliting\activities_app\activities.sqlite</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>

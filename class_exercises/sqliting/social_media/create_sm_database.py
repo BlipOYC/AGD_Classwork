@@ -1,7 +1,5 @@
 import sqlite3
 
-
-
 create_users_table = """
  CREATE TABLE IF NOT EXISTS users(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -41,8 +39,8 @@ CREATE TABLE IF NOT EXISTS comments(
 
 with sqlite3.connect('social_media') as conn:
     cursor = conn.cursor()
-    #cursor.execute(create_users_table)
-    #cursor.execute(create_posts_table)
-    #cursor.execute(create_likes_table)
+    cursor.execute(create_users_table)
+    cursor.execute(create_posts_table)
+    cursor.execute(create_likes_table)
     cursor.execute(create_comments_table)
     conn.commit()
