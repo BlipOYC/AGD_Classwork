@@ -16,6 +16,13 @@ class Controller:
             activity_names = [activity.name for activity in activities]
         return activity_names
 
+    def get_activity_attendees(self, activity):
+        with so.Session(bind=self.engine) as session:
+            stmt = sa.select(Activity).where(Activity.name == activity)
+            activity = session.scalar(stmt)
+            activity_attendees = activity.attendees
+        return activity_attendees
+
     def get_all_people(self):
         with so.Session(bind=self.engine) as session:
             stmt = sa.select(Person).order_by(Person.first_name, Person.last_name)
@@ -41,6 +48,31 @@ class Controller:
             stmt = sa.insert(Activity).values(name=name)
             session.execute(stmt)
             session.commit()
+
+    def add_participant(self, first_name, last_name, activity):
+        with so.Session(bind=self.engine) as session:
+            stmt = sa.select(Activity).where(Activity.name == activity)
+            activity = session.scalar(stmt)
+
+            if activity is None:
+                raise ValueError(f"Activity {activity} does not exist")
+
+            stmt = sa.select(Person).where(
+                Person.first_name == first_name,
+                Person.last_name == last_name,
+            )
+            person = session.scalar(stmt)
+
+            if person is None:
+                person = Person(first_name = first_name, last_name = last_name)
+                session.add(person)
+
+            if activity not in person.activities:
+                person.activities.append(activity)
+
+            session.commit()
+
+
 
 
 
