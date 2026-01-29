@@ -1,6 +1,5 @@
 from sqlalchemy import create_engine
 from models import Base
-import antigravity
 engine = create_engine('sqlite:///activities.sqlite', echo=True)
 
 # drop any existing tables.
