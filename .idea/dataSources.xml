@@ -8,5 +8,12 @@
       <jdbc-url>jdbc:sqlite:C:\Users\oweche0809\PycharmProjects\AGD_Classwork\class_exercises\sqliting\activities_app\activities.sqlite</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="social_media" uuid="2e1875f5-d7ed-4a6c-9524-5f7fb7bacaa4">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:C:\Users\oweche0809\PycharmProjects\AGD_Classwork\class_exercises\sqliting\sm_app_sqlalchemy\social_media.db</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>
