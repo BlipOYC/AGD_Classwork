@@ -40,6 +40,26 @@ class Controller:
             session.add(new_user)
             session.commit()
 
+    def make_post(self, title, description):
+        with so.Session(bind=self.engine) as session:
+            post = Post(title=title, description=description, user_id=self.current_user_id)
+            session.add(post)
+
+    def make_comment(self, text):
+        with so.Session(bind=self.engine) as session:
+            comment = Comment(text=text, user_id=self.current_user_id)
+            session.add(comment)
+
+    def get_some_posts(self):
+        with so.Session(bind=self.engine) as session:
+            posts = list(session.scalars(sa.select(Post).order_by(Post.id)).all())
+        return posts[::-1][:3]
+
+    def get_specific_post(self, post_id):
+        with so.Session(bind=self.engine) as session:
+            pass
+
+
 
 if __name__ == '__main__':
     controller = Controller()

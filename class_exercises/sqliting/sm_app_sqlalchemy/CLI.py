@@ -67,28 +67,57 @@ class CLI:
                 'Male',
                 'Female',
                 'Other',
+                'Professional',
                 'Prefer not to say',
             ]
-
             gender_choice = pyip.inputMenu(genders,
                                            prompt='Select gender\n',
                                            numbered=True,)
-
             if gender_choice == "Prefer not to say":
                 gender = None
             else:
                 gender = gender_choice
-
             nationality = input("Enter your nationality: ")
             self.controller.make_user(name, age, gender, nationality)
-        return self.login
+        self.controller.set_current_user_from_name(name)
+        return self.user_home
 
     def user_home(self):
         user_name = self.controller.get_user_name()
         self.show_title(f'User Home - {user_name.title()}')
-        input('Under construction')
-        return self.login
+        menu_item = ['Create posts',
+                     'View posts',
+                     'See profile',
+                     'Exit',]
+        menu_choice = pyip.inputMenu(menu_item,
+                                     prompt='What would you like to do?\n',
+                                     numbered=True,)
+        if menu_choice.lower() == 'create posts':
+            next_menu = self.create_posts
+        if menu_choice.lower() == 'view posts':
+            next_menu = self.view_posts
+        if menu_choice.lower() == 'see profile':
+            next_menu = self.see_profile
+        if menu_choice.lower() == 'exit':
+            next_menu = self.login
+        else:
+            next_menu = self.user_home
+        return next_menu
 
+    def create_posts(self):
+        self.show_title('Create Posts')
+        input("Under Construction")
+        pass
+
+    def view_posts(self):
+        self.show_title('View Posts')
+        input("Under Construction")
+        pass
+
+    def see_profile(self):
+        self.show_title('Profile')
+        input("Under Construction")
+        pass
 
 if __name__ == '__main__':
     cli = CLI()
