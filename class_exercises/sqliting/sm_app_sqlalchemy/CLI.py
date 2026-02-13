@@ -1,10 +1,12 @@
 import pyinputplus as pyip
+from fontTools.misc.textTools import hexStr
 
 from controller import Controller
 
 
 class CLI:
     def __init__(self):
+        self.viewing_post = None
         self.controller = Controller()
         self.current_menu = self.login
         self.running = True
@@ -92,13 +94,14 @@ class CLI:
         menu_choice = pyip.inputMenu(menu_item,
                                      prompt='What would you like to do?\n',
                                      numbered=True,)
+
         if menu_choice.lower() == 'create posts':
             next_menu = self.create_posts
-        if menu_choice.lower() == 'view posts':
+        elif menu_choice.lower() == 'view posts':
             next_menu = self.view_posts
-        if menu_choice.lower() == 'see profile':
+        elif menu_choice.lower() == 'see profile':
             next_menu = self.see_profile
-        if menu_choice.lower() == 'exit':
+        elif menu_choice.lower() == 'exit':
             next_menu = self.login
         else:
             next_menu = self.user_home
@@ -111,8 +114,42 @@ class CLI:
 
     def view_posts(self):
         self.show_title('View Posts')
-        input("Under Construction")
+        posts = self.controller.get_post_information()[::-1]
+
+        post_menu = [f"{post['title']}: {post['description']}" for post in posts]
+        post_choice = pyip.inputMenu(post_menu,
+                                     prompt='What post would you like to see?\n',
+                                     numbered=True,)
+
+        self.viewing_post = posts[post_menu.index(post_choice)]['post_id']
+        next_menu = self.view_specific_posts
+        return next_menu
+
+    def view_specific_posts(self):
+        post_information = self.controller.get_specific_post()
+        self.show_title(post_information['title'])
+        print(post_information['description'])
+        for comment in post_information['comments']:
+            print(f"Comment {comment['comment']}")
+        options = [
+            "Return",
+            "Leave a comment",
+        ]
+        option_choice = pyip.inputMenu(options,
+                                       numbered=True,)
+
+        if option_choice.lower() == 'return':
+            next_menu = self.view_posts
+        elif option_choice.lower() == 'leave a comment':
+            next_menu = self.leave_comment
+        else:
+            next_menu = self.view_specific_posts
+
+        return next_menu
+
+    def leave_comment(self):
         pass
+
 
     def see_profile(self):
         self.show_title('Profile')
@@ -121,4 +158,4 @@ class CLI:
 
 if __name__ == '__main__':
     cli = CLI()
-# controller = Controller()
+    controller = Controller()

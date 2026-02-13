@@ -5,12 +5,12 @@ from models import User, Post, Comment
 
 
 class Controller:
-    def __init__(self, db_location = 'sqlite:///social_media.db'):
-        self.current_user_id: int|None = None
-        self.viewing_post_user_id: int|None = None
+    def __init__(self, db_location='sqlite:///social_media.db'):
+        self.current_user_id: int | None = None
+        self.viewing_post_user_id: int | None = None
         self.engine = sa.create_engine(db_location)
 
-    def set_current_user_from_name(self, name:str) -> User|None:
+    def set_current_user_from_name(self, name: str) -> User | None:
         with so.Session(bind=self.engine) as session:
             user = session.scalars(sa.select(User).where(User.name == name)).one_or_none()
 
@@ -22,7 +22,7 @@ class Controller:
             self.current_user_id = user.id
         return user
 
-    def get_user_name(self, user_id: int|None = None) -> 'str':
+    def get_user_name(self, user_id: int | None = None) -> 'str':
         if user_id is None:
             user_id = self.current_user_id
         with so.Session(bind=self.engine) as session:
@@ -50,14 +50,25 @@ class Controller:
             comment = Comment(text=text, user_id=self.current_user_id)
             session.add(comment)
 
-    def get_some_posts(self):
+    def get_post_information(self):
         with so.Session(bind=self.engine) as session:
-            posts = list(session.scalars(sa.select(Post).order_by(Post.id)).all())
-        return posts[::-1][:3]
+            posts = session.scalars(sa.select(Post).order_by(Post.id)).all()
+            post_information = []
+            for post in posts:
+                post_info = {'title': post.title, 'description': post.description, 'post_id': post.id}
+                post_information.append(post_info)
+        return post_information
 
     def get_specific_post(self, post_id):
+        if post_id is None:
+            raise ValueError
         with so.Session(bind=self.engine) as session:
-            pass
+            post = session.scalars(sa.select(Post).where(Post.id == post_id)).one_or_none()
+            comments = session.scalars(sa.select(Comment).where(Comment.post_id == post_id)).all()
+            post_info = {'title': post.title, 'description': post.description, 'comments': comments}
+
+        return post_info
+
 
 
 
