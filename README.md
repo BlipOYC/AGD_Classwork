@@ -4,3 +4,5 @@
 - Test-Driven Development (TDD)
 - Comprehension
 - Object-Oriented Programming (OOP)
+- GUI with tkinter
+- SQL and SQLalchemy

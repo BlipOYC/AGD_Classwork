@@ -1,5 +1,6 @@
 import sqlalchemy as sa
 import sqlalchemy.orm as so
+from sqlalchemy.orm import Mapped
 
 from models import User, Post, Comment
 
@@ -29,10 +30,21 @@ class Controller:
             name = session.get(User, user_id).name
         return name
 
+    def get_user_info(self, user_id: int | None = None):
+        if user_id is None:
+            user_id = self.current_user_id
+        with so.Session(bind=self.engine) as session:
+            info = session.get(User, user_id)
+        return {"Name": info.name,
+                "Age": info.age,
+                "Gender": info.gender,
+                "Nationality": info.nationality
+            }
+
     def get_user_names(self) -> list[str]:
         with so.Session(bind=self.engine) as session:
             user_names = session.scalars(sa.select(User.name).order_by(User.name)).all()
-        return list(user_names)
+        return user_names
 
     def make_user(self, name, age, gender, nationality):
         with so.Session(bind=self.engine) as session:
@@ -44,11 +56,13 @@ class Controller:
         with so.Session(bind=self.engine) as session:
             post = Post(title=title, description=description, user_id=self.current_user_id)
             session.add(post)
+            session.commit()
 
     def make_comment(self, text, post_id):
         with so.Session(bind=self.engine) as session:
-            comment = Comment(text=text, user_id=self.current_user_id, post_id=post_id)
+            comment = Comment(comment=text, user_id=self.current_user_id, post_id=post_id)
             session.add(comment)
+            session.commit()
 
     def get_post_information(self):
         with so.Session(bind=self.engine) as session:
@@ -76,3 +90,4 @@ class Controller:
 if __name__ == '__main__':
     controller = Controller()
     controller.set_current_user_from_name('Alice')
+    controller.get_user_names()

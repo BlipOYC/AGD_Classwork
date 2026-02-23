@@ -109,21 +109,27 @@ class CLI:
 
     def create_posts(self):
         self.show_title('Create Posts')
-        input("Under Construction")
-        pass
+        title = input("What is your title?\n")
+        description = input("What is your post about?\n")
+        self.controller.make_post(title, description)
+
+        return self.user_home
 
     def view_posts(self):
         self.show_title('View Posts')
         posts = self.controller.get_post_information()[::-1]
 
-        post_menu = [f"{post['title']}: {post['description']}" for post in posts]
+        post_menu = [f"{post['title']}: {post['description']}" for post in posts] + ["Return to home"]
         post_choice = pyip.inputMenu(post_menu,
                                      prompt='What post would you like to see?\n',
                                      numbered=True,)
+        try:
+            self.viewing_post = posts[post_menu.index(post_choice)]['post_id']
+            next_menu = self.view_specific_posts
+            return next_menu
+        except IndexError:
+            return self.user_home
 
-        self.viewing_post = posts[post_menu.index(post_choice)]['post_id']
-        next_menu = self.view_specific_posts
-        return next_menu
 
     def view_specific_posts(self):
         post_information = self.controller.get_specific_post(self.viewing_post)
@@ -134,8 +140,8 @@ class CLI:
             print(f"{user} commented: {comment.comment}")
 
         options = [
-            "Return",
             "Leave a comment",
+            "Return",
         ]
         option_choice = pyip.inputMenu(options,
                                        numbered=True,)
@@ -151,14 +157,19 @@ class CLI:
 
     def leave_comment(self):
         user_comment = input("Enter your comment: ")
-        self.controller.make_comment(user_comment, self.controller.current_user_id, self.viewing_post)
+        self.controller.make_comment(user_comment, self.viewing_post)
 
-
+        return self.view_specific_posts
 
     def see_profile(self):
         self.show_title('Profile')
-        input("Under Construction")
-        pass
+        user_information = self.controller.get_user_info()
+        for key, value in user_information.items():
+            print(f"{key}: {value}")
+        exiting = input()
+
+        return self.user_home #This line only activates upon the input receiving an input anyway
+
 
 if __name__ == '__main__':
     cli = CLI()
