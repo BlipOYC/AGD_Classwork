@@ -126,11 +126,13 @@ class CLI:
         return next_menu
 
     def view_specific_posts(self):
-        post_information = self.controller.get_specific_post()
+        post_information = self.controller.get_specific_post(self.viewing_post)
         self.show_title(post_information['title'])
         print(post_information['description'])
         for comment in post_information['comments']:
-            print(f"Comment {comment['comment']}")
+            user = self.controller.get_user_name(comment.user_id)
+            print(f"{user} commented: {comment.comment}")
+
         options = [
             "Return",
             "Leave a comment",
@@ -148,7 +150,9 @@ class CLI:
         return next_menu
 
     def leave_comment(self):
-        pass
+        user_comment = input("Enter your comment: ")
+        self.controller.make_comment(user_comment, self.controller.current_user_id, self.viewing_post)
+
 
 
     def see_profile(self):

@@ -45,9 +45,9 @@ class Controller:
             post = Post(title=title, description=description, user_id=self.current_user_id)
             session.add(post)
 
-    def make_comment(self, text):
+    def make_comment(self, text, post_id):
         with so.Session(bind=self.engine) as session:
-            comment = Comment(text=text, user_id=self.current_user_id)
+            comment = Comment(text=text, user_id=self.current_user_id, post_id=post_id)
             session.add(comment)
 
     def get_post_information(self):
@@ -68,6 +68,7 @@ class Controller:
             post_info = {'title': post.title, 'description': post.description, 'comments': comments}
 
         return post_info
+
 
 
 
