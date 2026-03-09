@@ -20,9 +20,11 @@ class Game:
             self.set_background_from_file("floor_plan.csv")
         try:
             player_pos = self.find_objects_by_name("S")[0].pos
-            self.characters = [Character(name="P", pos=(player_pos), solid=False),]
+            self.characters.append(Character(name="P", pos=player_pos, solid=False))
         except IndexError:
             pass
+
+        self.dimensions = self.background[-1].pos
 
     def add_background_object(self, btype, pos, solid):
         self.background.append(GameObj(name=btype, pos=pos, solid=solid))

@@ -30,13 +30,13 @@ class Character(GameObj):
         row, col = self.pos
         match direction.lower():
             case "north":
-                return row - 1, col
+                return max(0, row - 1), col
             case "south":
                 return row + 1, col
             case "east":
                 return row, col + 1
             case "west":
-                return row, col - 1
+                return row, max(col - 1, 0)
             case _:
                 return None
 

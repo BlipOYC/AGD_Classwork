@@ -62,7 +62,7 @@ class TextInterface:
         if new_pos:
             self.game.move_character(self.player, new_pos)
             if new_pos == self.game.find_objects_by_name("E")[0].pos:
-                running = False
+                self.running = False
                 self.win = True
 
 
@@ -73,6 +73,9 @@ class TextInterface:
         while self.running:
             self._draw_area()
             self._handle_input()
+
+        if self.win:
+            print("You won!")
 
 
 if __name__ == "__main__":
