@@ -9,12 +9,20 @@ class Game:
         self.start = None
         self.exit = None
 
-    def __repr__(self):
+    def __repr__(self): 
         return f"self.characters: {self.characters}\nself.background: {self.background}\nself.dimensions: {self.dimensions}\nstart: {self.start}\nexit: {self.exit}"
 
-    def set_up(self, characters, background):
-        self.characters = characters
-        self.background = background
+    def set_up(self, characters=None, background=None):
+        if background and characters:
+            self.characters = characters
+            self.background = background
+        elif background == None or characters == None:
+            self.set_background_from_file("floor_plan.csv")
+        try:
+            player_pos = self.find_objects_by_name("S")[0].pos
+            self.characters = [Character(name="P", pos=(player_pos), solid=False),]
+        except IndexError:
+            pass
 
     def add_background_object(self, btype, pos, solid):
         self.background.append(GameObj(name=btype, pos=pos, solid=solid))

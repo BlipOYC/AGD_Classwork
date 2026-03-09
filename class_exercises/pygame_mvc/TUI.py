@@ -11,24 +11,56 @@ class TextInterface:
         self.running = True
 
     def _create_area(self):
+        """ Create a list of lists where each [row][col] in self.game_area is given the first letter of the background or character in that grid location. If there is no background or character in a grid location, use the default '.'"""
 
-        pass
+        max_row = max(obj.pos[0] for obj in self.game.background)
+        max_col = max(obj.pos[1] for obj in self.game.background)
+
+        rows = max_row + 1
+        cols = max_col + 1
+
+        self.game_area = [["." for _ in range(cols)] for _ in range(rows)]
+
+        for obj in self.game.background:
+            r, c = obj.pos
+            self.game_area[r][c] = obj.name[0]
+
+        pr, pc = self.player.pos
+        self.game_area[pr][pc] = "P"
 
 
     def _draw_area(self):
         """ Loop through each row, join the characters in that row and print it out 'W' in the grid is replaced by '\u2593' (a gray square), borders of the grid are shown using the unicode box-drawing characters (https://jrgraphix.net/r/Unicode/2500-257F)"""
-        pass
+        self._create_area()
+
+        cols = len(self.game_area[0])
+
+        print("╔" + "═" * cols + "╗")
+        for row in self.game_area:
+            line = ""
+            for cell in row:
+                if cell == "W":
+                    line += "\u2593"
+                else:
+                    line += cell
+            print("│" + line + "│")
+        print("╚" + "═" * cols + "╝")
 
 
     def _handle_input(self):
-        """Ask the user to input a direction and use game.move_character to move in that direction.
-        Set self.running to false if the user enters Q."""
-        pass
+        choice = input("Enter N,E,W or S to move (Q to Quit): ").upper()
+        if choice == "Q":
+            self.running = False
+
+        new_pos = self.player.find_next_move(choice)
+
+        if new_pos:
+            self.game.move_character(self.player, new_pos)
 
 
 
     def main_loop(self):
-        """Keep drawing the area and asking for player moves while self.runnng is True."""
+        """Keep drawing the area and asking for player moves while self.running is True."""
         print("Welcome to the Maze Game")
         while self.running:
             self._draw_area()

@@ -1,3 +1,10 @@
+direction_mapping = {
+    "N": "north",
+    "S": "south",
+    "E": "east",
+    "W": "west",
+}
+
 class GameObj:
     def __init__(self, name, pos, solid):
         self.name = name
@@ -15,6 +22,7 @@ class Character(GameObj):
         GameObj.__init__(self, name, pos, solid)
 
     def find_next_move(self, direction):
+        direction = direction_mapping[direction]
         row, col = self.pos
         match direction.lower():
             case "north":
