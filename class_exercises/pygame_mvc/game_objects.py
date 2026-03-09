@@ -22,7 +22,11 @@ class Character(GameObj):
         GameObj.__init__(self, name, pos, solid)
 
     def find_next_move(self, direction):
-        direction = direction_mapping[direction]
+        try:
+            direction = direction_mapping[direction]
+        except KeyError:
+            return None
+
         row, col = self.pos
         match direction.lower():
             case "north":

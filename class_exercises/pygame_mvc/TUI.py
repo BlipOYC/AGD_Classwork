@@ -9,6 +9,7 @@ class TextInterface:
         self.player = self.game.characters[0]
         self.game_area = []
         self.running = True
+        self.win = False
 
     def _create_area(self):
         """ Create a list of lists where each [row][col] in self.game_area is given the first letter of the background or character in that grid location. If there is no background or character in a grid location, use the default '.'"""
@@ -23,7 +24,11 @@ class TextInterface:
 
         for obj in self.game.background:
             r, c = obj.pos
-            self.game_area[r][c] = obj.name[0]
+            if obj.name == "F":
+                placeholder = "."
+            else:
+                placeholder = obj.name
+            self.game_area[r][c] = placeholder
 
         pr, pc = self.player.pos
         self.game_area[pr][pc] = "P"
@@ -56,6 +61,9 @@ class TextInterface:
 
         if new_pos:
             self.game.move_character(self.player, new_pos)
+            if new_pos == self.game.find_objects_by_name("E")[0].pos:
+                running = False
+                self.win = True
 
 
 
