@@ -69,6 +69,11 @@ class GameGUI:
             if (event.type == QUIT or
                     event.type == KEYDOWN and event.key == K_ESCAPE):
                 self.running = False
+            if event.type == KEYDOWN:
+                if event.key == "W":
+                    self.move_direction = "N"
+                elif event.key == "A":
+                    self.move_direction = "E"
 
             # Checks for movement keys amd sets self.move_direction according to the key pressed.
             # Otherwise, set self.move_direction to None
