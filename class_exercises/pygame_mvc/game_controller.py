@@ -16,7 +16,7 @@ class Game:
         if background and characters:
             self.characters = characters
             self.background = background
-        elif background == None or characters == None:
+        elif background is None or characters is None:
             self.set_background_from_file("floor_plan.csv")
         try:
             player_pos = self.find_objects_by_name("S")[0].pos
@@ -24,7 +24,7 @@ class Game:
         except IndexError:
             pass
 
-        self.dimensions = self.background[-1].pos
+        self.dimensions = (self.background[-1].pos[0] + 1, self.background[-1].pos[1] + 1)
 
     def add_background_object(self, btype, pos, solid):
         self.background.append(GameObj(name=btype, pos=pos, solid=solid))
