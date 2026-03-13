@@ -53,6 +53,8 @@ class Game:
         return valid_objects
 
     def move_character(self, character, new_pos):
+        if new_pos is None:
+            return
         if not self.check_collision(new_pos):
             character.pos = new_pos
 
@@ -66,3 +68,7 @@ class Game:
     def show_game_grid(self):
         for cell in sorted(self.background, key=lambda unit: unit.pos):
             print(cell.name)
+
+if __name__ == "__main__":
+    game = Game()
+    game.set_up()
